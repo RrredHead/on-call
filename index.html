@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>On-call калькулятор</title>
+    <meta name="description" content="Расчёт премии к ЗП за On-Call" />
+  </head>
+
+  <body>
+    <script>
+      function calcOnCall(salary, workingDays, nonWorkingDays) {
+        var mPremia = 0.2;
+        var wPremia = mPremia / 4.35; // 4.35 - столько в среднем недель в месяце
+        var commonWeekOnCallHours = 5 * 16 + 2 * 24; // 16 часов onCall в обычные дни и 24 в выходные
+        var onCallHourPrimiaPrice = (salary * wPremia) / commonWeekOnCallHours;
+
+        var premia =
+          (workingDays * 16 + nonWorkingDays * 24) * onCallHourPrimiaPrice;
+        return Number(premia.toFixed(2));
+      }
+
+      function onFormSubmit(event) {
+        var salary = Number(this.salary.value);
+        var workingDays = Number(this.workingDays.value);
+        var nonWorkingDays = Number(this.nonWorkingDays.value);
+        
+        var premia = calcOnCall(salary, workingDays, nonWorkingDays);
+        document.getElementById('premia').innerHTML = premia;
+
+        event.preventDefault();
+        return false;
+      }
+    </script>
+    <style>
+      label {
+        display: flex;
+        margin: 15px;
+      }
+
+      label > span {
+        width: 250px;
+      }
+
+      #premiaWrapper {
+          margin: 15px;
+      }
+
+      #premia {
+          color: brown;
+          font-weight: 800;
+      }
+    </style>
+    <form onsubmit="onFormSubmit.apply(this, arguments)" action="">
+      <fieldset>
+        <legend>Расчёт премии к ЗП за On-Call</legend>
+        <label>
+          <span>Твоя ЗП, на руки</span>
+          <input
+            id="salary"
+            type="number"
+            min="20000"
+            step="1000"
+            value="100000"
+          />
+        </label>
+        <label>
+          <span>Сколько рабочих дней дежурил</span>
+          <input id="workingDays" type="number" min="0" value="5" />
+        </label>
+        <label>
+          <span>Сколько нерабочих дней дежурил</span>
+          <input id="nonWorkingDays" type="number" min="0" value="2" />
+        </label>
+        <input type="submit" value="Посчитать"/>
+      </fieldset>
+    </form>
+    <div id="premiaWrapper">
+        <span>Премия:&nbsp;</span><span id="premia">...</div>
+    </div>
+  </body>
+</html>
