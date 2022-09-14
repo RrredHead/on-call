@@ -11,6 +11,13 @@
 
   <body>
     <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelectorAll("form")
+          .forEach((form) => form.requestSubmit());
+      });
+    </script>
+    <script>
       function calcOnCall(salary, workingDays, nonWorkingDays) {
         var mPremia = 0.2;
         var wPremia = mPremia / 4.35; // 4.35 - столько в среднем недель в месяце
